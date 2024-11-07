@@ -18,8 +18,10 @@ export default function EditInvoiceForm({
   invoice: InvoiceForm;
   customers: CustomerField[];
 }) {
+  // Binding id to be able to pass in to form
   const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
   return (
+    // we can not simply pass id in to form and we need to bind it
     <form action={updateInvoiceWithId}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
