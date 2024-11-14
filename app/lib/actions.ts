@@ -7,7 +7,6 @@ import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 // redirect function
 import { redirect } from "next/navigation";
-import { error } from "console";
 
 // create form data schema to check how data should look like
 const FormSchema = z.object({
