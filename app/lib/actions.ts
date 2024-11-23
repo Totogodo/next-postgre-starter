@@ -4,9 +4,11 @@ import z from "zod";
 // SQL to make sql query to the server
 import { sql } from "@vercel/postgres";
 // revalidate path to update cache so you can see relevant data on the page
-import { expirePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 // redirect function
 import { redirect } from "next/navigation";
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
 
 // create form data schema to check how data should look like
 const FormSchema = z.object({
@@ -68,7 +70,7 @@ export async function createInvoice(prevState: State, formData: FormData) {
   }
 
   // Revalidate the cache for the invoices page and redirect the user.
-  expirePath("/dashboard/invoices");
+  revalidatePath("/dashboard/invoices");
   redirect("/dashboard/invoices");
 }
 
@@ -116,18 +118,37 @@ export async function updateInvoice(
     };
   }
 
-  expirePath("/dashboard/invoices");
+  revalidatePath("/dashboard/invoices");
   redirect("/dashboard/invoices");
 }
 
 export async function deleteInvoice(id: string) {
   try {
     await sql`DELETE FROM invoices WHERE id = ${id}`;
-    expirePath("/dashboard/invoices");
+    revalidatePath("/dashboard/invoices");
     return { message: "Deleted Invoice" };
   } catch (error) {
     return {
       message: "Database Error: Failed to Delete Invoice.",
     };
+  }
+}
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData
+) {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid credentials.";
+        default:
+          return "Something went wrong.";
+      }
+    }
+    throw error;
   }
 }
