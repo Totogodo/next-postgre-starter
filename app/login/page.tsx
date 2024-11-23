@@ -1,6 +1,14 @@
 import AcmeLogo from "@/app/ui/acme-logo";
 import LoginForm from "@/app/ui/login-form";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: {
+    template: "%s | Kinkify Log-in",
+    default: "Kinkify Log-in",
+  },
+  description: "The official Kinkify Shop Log-in page.",
+};
 export default function LoginPage() {
   return (
     <main className="flex items-center justify-center md:h-screen">

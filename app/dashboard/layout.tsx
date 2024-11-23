@@ -1,4 +1,13 @@
-import SideNav from '@/app/ui/dashboard/sidenav';
+import SideNav from "@/app/ui/dashboard/sidenav";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: {
+    template: "%s | Kinkify Dashboard",
+    default: "Kinkify Dashboard",
+  },
+  description: "The official Kinkify Shop Dashboard, built with App Router.",
+};
 
 export const experimental_ppr = true;
 
